@@ -1,5 +1,8 @@
 <template>
   <g class="resistor-node" :transform="`translate(${x}, ${y})`">
+    <!-- Invisible Hitbox for easy dragging -->
+    <rect :x="p1.x - 10" :y="p1.y - 15" :width="Math.abs(p2.x - p1.x) + 20" height="30" fill="transparent" class="cursor-move" />
+
     <!-- Pin 1 -->
     <circle :cx="p1.x" :cy="p1.y" r="4" class="fill-neo-bg stroke-neo-gray" stroke-width="2" />
     

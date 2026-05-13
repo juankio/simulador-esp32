@@ -1,5 +1,8 @@
 <template>
   <g class="led-node" :transform="`translate(${x}, ${y})`">
+    <!-- Invisible Hitbox for easy dragging -->
+    <rect :x="anode.x - 20" :y="anode.y - 20" :width="Math.abs(cathode.x - anode.x) + 40" height="40" fill="transparent" class="cursor-move" />
+
     <!-- Anode -->
     <circle :cx="anode.x" :cy="anode.y" r="4" class="fill-neo-bg stroke-neo-gray" stroke-width="2" />
     <text :x="anode.x - 12" :y="anode.y + 3" class="fill-neo-gray text-[8px] font-mono">A</text>

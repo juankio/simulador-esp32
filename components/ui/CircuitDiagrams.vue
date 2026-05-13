@@ -14,10 +14,107 @@
 
       <!-- Body -->
       <div class="p-6 space-y-8 text-neo-gray">
+
+        <!-- SECTION 0: TALLER DE CÁLCULOS (KIRCHHOFF & REQ) -->
+        <section class="space-y-4">
+          <h3 class="text-lg text-white font-bold border-l-4 border-neo-purple pl-3">Cálculos de Taller: Mallas y Resistencia Equivalente</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+            
+            <!-- Kirchhoff -->
+            <div class="bg-black/40 border border-neo-grid rounded-lg p-4 flex flex-col min-h-[300px]">
+              <div class="text-xs text-center text-neo-purple mb-4 font-mono uppercase tracking-widest">Leyes de Kirchhoff (2 Mallas)</div>
+              <svg width="100%" height="150" viewBox="0 0 300 150" class="mx-auto block">
+                <!-- Rama izquierda V1 -->
+                <path d="M 50 110 L 50 80 M 40 80 L 60 80 M 45 75 L 55 75 M 50 75 L 50 30 L 80 30" stroke="#a1a1aa" stroke-width="2" fill="none" />
+                <text x="35" y="70" fill="white" font-size="12">V1</text>
+                <!-- R1 -->
+                <path d="M 80 30 L 85 20 L 95 40 L 105 20 L 115 40 L 125 20 L 130 30 L 150 30" stroke="#facc15" stroke-width="2" fill="none" stroke-linejoin="round" />
+                <text x="105" y="15" fill="#facc15" font-size="12">R1</text>
+                
+                <!-- Rama central R2 -->
+                <path d="M 150 30 L 150 50" stroke="#a1a1aa" stroke-width="2" fill="none" />
+                <path d="M 150 50 L 140 55 L 160 65 L 140 75 L 160 85 L 140 95 L 150 100 L 150 110" stroke="#facc15" stroke-width="2" fill="none" stroke-linejoin="round" />
+                <text x="170" y="80" fill="#facc15" font-size="12">R2</text>
+                
+                <!-- Rama derecha V2 & R3 -->
+                <path d="M 150 30 L 250 30 L 250 50" stroke="#a1a1aa" stroke-width="2" fill="none" />
+                <path d="M 250 50 L 240 55 L 260 65 L 240 75 L 260 85 L 240 95 L 250 100 L 250 110" stroke="#facc15" stroke-width="2" fill="none" stroke-linejoin="round" />
+                <text x="270" y="80" fill="#facc15" font-size="12">R3</text>
+                <path d="M 250 110 L 250 120 M 240 120 L 260 120 M 245 125 L 255 125 M 250 125 L 250 130 L 150 130" stroke="#a1a1aa" stroke-width="2" fill="none" />
+                <text x="270" y="125" fill="white" font-size="12">V2</text>
+                
+                <!-- Retorno R4 (Abajo izq) -->
+                <path d="M 150 110 L 150 130 L 130 130" stroke="#a1a1aa" stroke-width="2" fill="none" />
+                <path d="M 130 130 L 125 120 L 115 140 L 105 120 L 95 140 L 85 120 L 80 130 L 50 130 L 50 110" stroke="#facc15" stroke-width="2" fill="none" stroke-linejoin="round" />
+                <text x="105" y="115" fill="#facc15" font-size="12">R4</text>
+
+                <!-- Loops de corriente (Curvas Verdes) -->
+                <path d="M 100 50 A 30 30 0 1 1 100 100 A 30 30 0 0 1 100 50" stroke="#34d399" stroke-width="1.5" fill="none" stroke-dasharray="4" />
+                <polygon points="100,50 105,45 105,55" fill="#34d399" />
+                <text x="95" y="80" fill="#34d399" font-size="12">I1</text>
+                
+                <path d="M 200 50 A 30 30 0 1 1 200 100 A 30 30 0 0 1 200 50" stroke="#34d399" stroke-width="1.5" fill="none" stroke-dasharray="4" />
+                <polygon points="200,50 205,45 205,55" fill="#34d399" />
+                <text x="195" y="80" fill="#34d399" font-size="12">I2</text>
+              </svg>
+              <div class="mt-4 space-y-2 text-xs font-mono bg-black/50 p-3 rounded text-neo-gray">
+                <div class="text-white font-bold border-b border-neo-grid pb-1 mb-2">Ecuaciones de Sistema</div>
+                <p>1) Nodos: <span class="text-neo-blue">I₁ + I₃ = I₂</span></p>
+                <p>2) Malla 1: <span class="text-neo-red">-V₁ + I₁R₁ + I₂R₂ + I₁R₄ = 0</span></p>
+                <p>3) Malla 2: <span class="text-neo-red">-I₂R₂ - I₃R₃ + V₂ = 0</span></p>
+              </div>
+            </div>
+
+            <!-- Resistencia Equivalente -->
+            <div class="bg-black/40 border border-neo-grid rounded-lg p-4 flex flex-col min-h-[300px]">
+              <div class="text-xs text-center text-neo-purple mb-4 font-mono uppercase tracking-widest">Resistencia Equivalente (Req)</div>
+              
+              <div class="space-y-4 text-xs font-mono text-neo-gray">
+                <!-- Step 1: Serie R34 -->
+                <div class="border-l-2 border-neo-blue pl-3">
+                  <div class="text-white font-bold mb-1">1. Reducción en Serie (R₃ + R₄)</div>
+                  <div class="flex items-center gap-2">
+                    <svg width="60" height="20" viewBox="0 0 60 20"><path d="M 0 10 L 10 10 L 15 0 L 25 20 L 30 10 L 40 10 L 45 0 L 55 20 L 60 10" stroke="#facc15" stroke-width="1.5" fill="none"/></svg>
+                    <span>R₃₄ = R₃ + R₄</span>
+                  </div>
+                  <p class="mt-1 opacity-70">Ej: 30Ω + 40Ω = 70Ω</p>
+                </div>
+
+                <!-- Step 2: Paralelo R2-5 -->
+                <div class="border-l-2 border-neo-blue pl-3">
+                  <div class="text-white font-bold mb-1">2. Reducción en Paralelo (R₂, R₃₄, R₅)</div>
+                  <div class="flex items-center gap-2">
+                    <svg width="60" height="40" viewBox="0 0 60 40">
+                      <path d="M 0 20 L 10 20 L 10 5 L 20 5 L 25 0 L 35 10 L 40 5 L 50 5 L 50 20 L 60 20" stroke="#facc15" stroke-width="1.5" fill="none"/>
+                      <path d="M 10 20 L 20 20 L 25 15 L 35 25 L 40 20 L 50 20" stroke="#facc15" stroke-width="1.5" fill="none"/>
+                      <path d="M 10 20 L 10 35 L 20 35 L 25 30 L 35 40 L 40 35 L 50 35 L 50 20" stroke="#facc15" stroke-width="1.5" fill="none"/>
+                    </svg>
+                    <span>1/R₂₋₅ = 1/R₂ + 1/R₃₄ + 1/R₅</span>
+                  </div>
+                  <p class="mt-1 opacity-70">Ej: 1/20 + 1/70 + 1/50 = 11.86Ω</p>
+                </div>
+
+                <!-- Step 3: Req Final -->
+                <div class="border-l-2 border-neo-green pl-3">
+                  <div class="text-white font-bold mb-1">3. Req Final en Serie (R₁ + R₂₋₅)</div>
+                  <div class="bg-black/30 p-2 rounded border border-neo-green text-neo-green">
+                    R_eq = R₁ + R₂₋₅<br>
+                    R_eq = 10Ω + 11.86Ω = 21.86Ω
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <hr class="border-neo-grid" />
         
         <!-- SECTION 1: LEY DE OHM -->
         <section class="space-y-4">
-          <h3 class="text-lg text-white font-bold border-l-4 border-neo-red pl-3">Ley de Ohm y Límite de Corriente (LEDs)</h3>
+          <h3 class="text-lg text-white font-bold border-l-4 border-neo-red pl-3">Ley de Ohm y Límite de Corriente (LEDs a 5V)</h3>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             <div class="space-y-3 text-sm leading-relaxed">
@@ -25,30 +122,29 @@
                 Según la <strong>Ley de Ohm</strong> (<span class="text-neo-blue font-mono bg-black/30 px-1 rounded">V = I × R</span>), la corriente que atraviesa un componente es proporcional al voltaje e inversamente proporcional a la resistencia.
               </p>
               <p>
-                Los pines GPIO del <strong>ESP32 operan a 3.3V</strong>. Sin embargo, un LED rojo común soporta un voltaje directo de aproximadamente <strong>2.0V</strong> y consume una corriente óptima de <strong>10mA a 20mA (0.02A)</strong>.
+                Alimentaremos los circuitos con la fuente de <strong>5V</strong> (pin VIN). Un LED rojo común soporta un voltaje directo de aproximadamente <strong>2.0V</strong> y consume una corriente óptima de <strong>15mA (0.015A)</strong>.
               </p>
               <div class="bg-black/30 p-3 rounded font-mono text-xs border border-neo-grid border-dashed">
                 // Cálculo para calcular la Resistencia:<br>
-                Vr = Voltaje ESP32 - Voltaje LED<br>
-                Vr = 3.3V - 2.0V = 1.3V<br>
+                Vr = Voltaje Fuente - Voltaje LED<br>
+                Vr = 5.0V - 2.0V = 3.0V<br>
                 <br>
                 R = V / I<br>
-                R = 1.3V / 0.01A = <strong class="text-neo-red">130 Ω</strong>
+                R = 3.0V / 0.015A = <strong class="text-neo-red">200 Ω</strong>
               </div>
               <p>
-                Por seguridad, en los circuitos digitales se estandariza una resistencia comercial de <strong>220 Ω o 330 Ω</strong> por cada LED. Si conectas el LED directo a GND sin resistencia, el exceso de corriente quemará el LED y posiblemente dañará el pin del ESP32.
+                Por seguridad, se estandariza utilizar la resistencia comercial superior más cercana: <strong>220 Ω</strong>. Si conectas el LED directo a GND sin resistencia, el exceso de corriente lo quemará instantáneamente.
               </p>
             </div>
             
             <div class="bg-black/40 border border-neo-grid rounded-lg p-4 flex flex-col items-center justify-center min-h-[200px]">
-              <div class="text-xs text-center text-white/50 mb-4 font-mono uppercase tracking-widest">Diagrama de Conexión</div>
+              <div class="text-xs text-center text-white/50 mb-4 font-mono uppercase tracking-widest">Diagrama de Conexión a 5V</div>
               <!-- Diagrama SVG Simplificado -->
               <svg width="250" height="100" viewBox="0 0 250 100">
-                <!-- ESP32 Pin -->
-                <rect x="10" y="40" width="40" height="20" rx="3" fill="#38bdf8" />
-                <text x="30" y="54" fill="black" font-size="12" font-family="monospace" text-anchor="middle" font-weight="bold">D4</text>
+                <!-- VCC 5V -->
+                <text x="30" y="54" fill="#ef4444" font-size="12" font-family="monospace" text-anchor="middle" font-weight="bold">5V</text>
                 <!-- Cable al Resistor -->
-                <path d="M 50 50 L 90 50" stroke="#ef4444" stroke-width="2" fill="none" />
+                <path d="M 45 50 L 90 50" stroke="#ef4444" stroke-width="2" fill="none" />
                 <!-- Resistor (Zig-Zag) -->
                 <path d="M 90 50 L 95 40 L 105 60 L 115 40 L 125 60 L 135 40 L 140 50 L 150 50" stroke="#facc15" stroke-width="2" fill="none" stroke-linejoin="round" />
                 <text x="115" y="30" fill="#facc15" font-size="10" font-family="monospace" text-anchor="middle">220 Ω</text>
