@@ -2,7 +2,10 @@
   <aside class="w-[500px] border-r border-neo-grid bg-[#0b1121] flex flex-col z-20 shadow-2xl">
     <div class="p-4 border-b border-neo-grid flex flex-col gap-3">
       <div class="flex justify-between items-center">
-        <h1 class="text-neo-blue font-mono font-bold tracking-widest text-sm"><span class="text-white">NEON</span> MAZE TWIN</h1>
+        <h1 class="text-neo-blue font-mono font-bold tracking-widest text-sm flex items-center gap-2">
+          <img src="/favicon.svg" alt="Logo" class="w-5 h-5 drop-shadow-[0_0_5px_#a855f7]" />
+          <span><span class="text-white">FÍSICA MAGNÉTICA</span> | NEON</span>
+        </h1>
         
         <div class="flex gap-2">
           <!-- Mock Simulation Button -->
