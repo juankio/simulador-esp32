@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { generateESP32Pins } from '~/utils/circuitData'
 
 export interface PinDef {
   id: string
@@ -23,33 +24,13 @@ export const useCircuitStore = defineStore('circuit', () => {
   const isSimulating = ref(false)
   
   // ============================
-  // GENERAR PINES DEL ESP32 (30 PINES)
-  // ============================
-  const leftLabels = ['EN', 'VP', 'VN', 'D34', 'D35', 'D32', 'D33', 'D25', 'D26', 'D27', 'D14', 'D12', 'D13', 'GND_L', 'VIN']
-  const rightLabels = ['D23', 'D22', 'TX', 'RX', 'D21', 'D19', 'D18', 'D5', 'TX2', 'RX2', 'D4', 'D2', 'D15', 'GND_R', '3V3']
-  
-  const generatePins = () => {
-    const pins: PinDef[] = []
-    leftLabels.forEach((lbl, i) => {
-      let t = 'io'; if (lbl === 'VIN') t = '5v'; if (lbl === 'GND_L') t = 'gnd';
-      pins.push({ id: `esp_${lbl.toLowerCase()}`, label: lbl, x: 10, y: 35 + i * 16, type: t as any, state: 0 })
-    })
-    rightLabels.forEach((lbl, i) => {
-      let t = 'io'; if (lbl === '3V3') t = '3v3'; if (lbl === 'GND_R') t = 'gnd';
-      if (lbl === 'D21') t = 'sda'; if (lbl === 'D22') t = 'scl';
-      pins.push({ id: `esp_${lbl.toLowerCase()}`, label: lbl, x: 110, y: 35 + i * 16, type: t as any, state: 0 })
-    })
-    return pins
-  }
-
-  // ============================
   // ESTADO DE HARDWARE
   // ============================
   
   const esp32 = ref({
     x: 50,
     y: 100,
-    pins: generatePins()
+    pins: generateESP32Pins()
   })
 
   const breadboard = ref({
