@@ -1,8 +1,8 @@
 <template>
   <div class="h-screen w-screen flex bg-neo-bg font-sans overflow-hidden">
-    <SimulatorSidebar @toast="showToast" @open-diagrams="diagramsOpen = true" />
-    <CircuitCanvas :toast="toast" />
-    <CircuitDiagrams :is-open="diagramsOpen" @close="diagramsOpen = false" />
+    <UiSimulatorSidebar @toast="showToast" @open-diagrams="diagramsOpen = true" />
+    <UiCircuitCanvas :toast="toast" />
+    <UiCircuitDiagrams :is-open="diagramsOpen" @close="diagramsOpen = false" />
   </div>
 </template>
 

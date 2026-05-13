@@ -85,7 +85,7 @@
     <div class="flex-1 p-4 relative">
       <div class="absolute top-2 right-6 text-xs text-neo-gray font-mono">maze_digital_twin.ino</div>
       <textarea 
-        v-model="code"
+        :value="code"
         class="w-full h-full bg-transparent text-gray-300 font-mono text-[12px] resize-none outline-none leading-relaxed"
         spellcheck="false"
         readonly
