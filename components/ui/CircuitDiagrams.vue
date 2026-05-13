@@ -24,7 +24,7 @@
             <!-- Kirchhoff -->
             <div class="bg-black/40 border border-neo-grid rounded-lg p-4 flex flex-col min-h-[300px]">
               <div class="text-xs text-center text-neo-purple mb-4 font-mono uppercase tracking-widest">Leyes de Kirchhoff (2 Mallas)</div>
-              <svg width="100%" height="150" viewBox="0 0 300 150" class="mx-auto block">
+              <svg width="100%" height="150" viewBox="0 0 300 150" class="mx-auto block max-w-full h-auto">
                 <!-- Rama izquierda V1 -->
                 <path d="M 50 110 L 50 80 M 40 80 L 60 80 M 45 75 L 55 75 M 50 75 L 50 30 L 80 30" stroke="#a1a1aa" stroke-width="2" fill="none" />
                 <text x="35" y="70" fill="white" font-size="12">V1</text>
@@ -75,7 +75,7 @@
                 <div class="border-l-2 border-neo-blue pl-3">
                   <div class="text-white font-bold mb-1">1. Reducción en Serie (R₃ + R₄)</div>
                   <div class="flex items-center gap-2">
-                    <svg width="60" height="20" viewBox="0 0 60 20"><path d="M 0 10 L 10 10 L 15 0 L 25 20 L 30 10 L 40 10 L 45 0 L 55 20 L 60 10" stroke="#facc15" stroke-width="1.5" fill="none"/></svg>
+                    <svg width="60" height="20" viewBox="0 0 60 20" class="max-w-full h-auto"><path d="M 0 10 L 10 10 L 15 0 L 25 20 L 30 10 L 40 10 L 45 0 L 55 20 L 60 10" stroke="#facc15" stroke-width="1.5" fill="none"/></svg>
                     <span>R₃₄ = R₃ + R₄</span>
                   </div>
                   <p class="mt-1 opacity-70">Ej: 30Ω + 40Ω = 70Ω</p>
@@ -85,7 +85,7 @@
                 <div class="border-l-2 border-neo-blue pl-3">
                   <div class="text-white font-bold mb-1">2. Reducción en Paralelo (R₂, R₃₄, R₅)</div>
                   <div class="flex items-center gap-2">
-                    <svg width="60" height="40" viewBox="0 0 60 40">
+                    <svg width="60" height="40" viewBox="0 0 60 40" class="max-w-full h-auto">
                       <path d="M 0 20 L 10 20 L 10 5 L 20 5 L 25 0 L 35 10 L 40 5 L 50 5 L 50 20 L 60 20" stroke="#facc15" stroke-width="1.5" fill="none"/>
                       <path d="M 10 20 L 20 20 L 25 15 L 35 25 L 40 20 L 50 20" stroke="#facc15" stroke-width="1.5" fill="none"/>
                       <path d="M 10 20 L 10 35 L 20 35 L 25 30 L 35 40 L 40 35 L 50 35 L 50 20" stroke="#facc15" stroke-width="1.5" fill="none"/>
@@ -140,7 +140,7 @@
             <div class="bg-black/40 border border-neo-grid rounded-lg p-4 flex flex-col items-center justify-center min-h-[200px]">
               <div class="text-xs text-center text-white/50 mb-4 font-mono uppercase tracking-widest">Diagrama de Conexión a 5V</div>
               <!-- Diagrama SVG Simplificado -->
-              <svg width="250" height="100" viewBox="0 0 250 100">
+              <svg width="250" height="100" viewBox="0 0 250 100" class="max-w-full h-auto">
                 <!-- VCC 5V -->
                 <text x="30" y="54" fill="#ef4444" font-size="12" font-family="monospace" text-anchor="middle" font-weight="bold">5V</text>
                 <!-- Cable al Resistor -->
@@ -183,7 +183,7 @@
             
             <div class="bg-black/40 border border-neo-grid rounded-lg p-4 flex flex-col items-center justify-center min-h-[200px] order-1 md:order-2">
               <div class="text-xs text-center text-white/50 mb-4 font-mono uppercase tracking-widest">Diagrama Pull-Up</div>
-              <svg width="250" height="160" viewBox="0 0 250 160">
+              <svg width="250" height="160" viewBox="0 0 250 160" class="max-w-full h-auto">
                 <!-- 3V3 Line -->
                 <text x="30" y="20" fill="#ef4444" font-size="12" font-family="monospace" text-anchor="middle" font-weight="bold">3.3V</text>
                 <path d="M 30 25 L 30 50" stroke="#ef4444" stroke-width="2" fill="none" />

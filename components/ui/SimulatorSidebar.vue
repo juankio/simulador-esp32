@@ -1,5 +1,5 @@
 <template>
-  <aside class="w-[500px] border-r border-neo-grid bg-[#0b1121] flex flex-col z-20 shadow-2xl">
+  <aside class="w-full md:w-[400px] lg:w-[500px] h-[45vh] md:h-full border-b md:border-r md:border-b-0 border-neo-grid bg-[#0b1121] flex flex-col z-20 shadow-2xl flex-shrink-0">
     <div class="p-4 border-b border-neo-grid flex flex-col gap-3">
       <div class="flex justify-between items-center">
         <h1 class="text-neo-blue font-mono font-bold tracking-widest text-sm flex items-center gap-2">

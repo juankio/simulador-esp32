@@ -1,5 +1,5 @@
 <template>
-  <svg class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 10;">
+  <g class="wire-layer" style="z-index: 10;">
     <defs>
       <!-- Neon Glow Filter -->
       <filter id="neon-glow" x="-50%" y="-50%" width="200%" height="200%">
@@ -44,7 +44,7 @@
             :class="{ 'opacity-100': isSimulating }"
             stroke-dasharray="10 10" />
     </g>
-  </svg>
+  </g>
 </template>
 
 <script setup lang="ts">

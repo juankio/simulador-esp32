@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen w-screen flex bg-neo-bg font-sans overflow-hidden">
+  <div class="h-screen w-screen flex flex-col md:flex-row bg-neo-bg font-sans overflow-hidden">
     <UiSimulatorSidebar @toast="showToast" @open-diagrams="diagramsOpen = true" />
     <UiCircuitCanvas :toast="toast" />
     <UiCircuitDiagrams :is-open="diagramsOpen" @close="diagramsOpen = false" />

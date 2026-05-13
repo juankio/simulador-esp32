@@ -89,13 +89,13 @@
 
       <!-- Net Highlighter Tooltip -->
       <div v-if="store.hoveredNet" 
-           class="fixed pointer-events-none z-50 bg-[#0f172a] border p-2 rounded shadow-2xl font-mono text-xs text-white"
+           class="fixed pointer-events-none z-50 bg-[#0f172a] border p-2 rounded shadow-2xl font-mono text-xs text-white max-w-[250px]"
            :class="{
              'border-neo-red': store.hoveredNet.includes('5V') || store.hoveredNet.includes('3V3'),
              'border-neo-gray': store.hoveredNet === 'GND',
              'border-neo-blue': store.hoveredNet.includes('SIG_') || store.hoveredNet.includes('I2C_')
            }"
-           :style="{ left: store.hoverPos.x + 15 + 'px', top: store.hoverPos.y + 15 + 'px' }">
+           :style="{ left: tooltipX + 'px', top: tooltipY + 'px' }">
         <div class="font-bold flex items-center gap-2"
              :class="{
                'text-neo-red': store.hoveredNet.includes('5V') || store.hoveredNet.includes('3V3'),
@@ -135,6 +135,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useCircuitStore } from '~/stores/circuit'
 
 const store = useCircuitStore()
@@ -142,6 +143,31 @@ const store = useCircuitStore()
 const props = defineProps<{
   toast: { show: boolean, message: string, type: string }
 }>()
+
+// Responsive Window Tracking
+const windowWidth = ref(1000)
+const windowHeight = ref(1000)
+
+const updateWindowSize = () => {
+  windowWidth.value = window.innerWidth
+  windowHeight.value = window.innerHeight
+}
+
+onMounted(() => {
+  updateWindowSize()
+  window.addEventListener('resize', updateWindowSize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateWindowSize)
+})
+
+const tooltipX = computed(() => {
+  return Math.min(store.hoverPos.x + 15, windowWidth.value - 260)
+})
+const tooltipY = computed(() => {
+  return Math.min(store.hoverPos.y + 15, windowHeight.value - 80)
+})
 
 // Zoom & Pan & Drag System
 const zoom = ref(1.1) 
