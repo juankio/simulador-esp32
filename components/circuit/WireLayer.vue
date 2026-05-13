@@ -39,7 +39,7 @@ import { useCircuitStore } from '~/stores/circuit'
 import anime from 'animejs'
 
 const store = useCircuitStore()
-const { wires, esp32, breadboard, leds, btnStart, btnFinish, lcd, wallSensor, resistor, isSimulating } = storeToRefs(store)
+const { wires, esp32, breadboard, leds, ledResistors, btnStart, btnFinish, lcd, wallSensor, resistor, isSimulating } = storeToRefs(store)
 
 const getPinGlobalCoords = (nodeId: string) => {
   // 1. ESP32
@@ -65,6 +65,12 @@ const getPinGlobalCoords = (nodeId: string) => {
   for (const led of leds.value) {
     if (nodeId === led.anode.id) return { x: led.x + led.anode.x, y: led.y + led.anode.y }
     if (nodeId === led.cathode.id) return { x: led.x + led.cathode.x, y: led.y + led.cathode.y }
+  }
+
+  // 4.5. LED Resistors (Array)
+  for (const res of ledResistors.value) {
+    if (nodeId === res.p1.id) return { x: res.x + res.p1.x, y: res.y + res.p1.y }
+    if (nodeId === res.p2.id) return { x: res.x + res.p2.x, y: res.y + res.p2.y }
   }
 
   // 5. Button (Start)

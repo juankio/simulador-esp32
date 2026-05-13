@@ -64,7 +64,12 @@
       
       <!-- Interactive Controls for solving the bugs -->
       <div class="p-3 bg-[#0f172a] border border-neo-grid rounded text-xs font-mono text-neo-gray space-y-2">
-        <p class="text-white font-bold mb-1">🛠 Hardware Fixer Panel</p>
+        <div class="flex justify-between items-center mb-1">
+          <p class="text-white font-bold">🛠 Hardware Fixer Panel</p>
+          <button @click="$emit('open-diagrams')" class="text-[10px] bg-neo-purple/20 text-neo-purple px-2 py-0.5 rounded border border-neo-purple hover:bg-neo-purple/40 transition-colors">
+            Ver Diagramas y Leyes
+          </button>
+        </div>
         <label class="flex items-center gap-2 cursor-pointer hover:text-neo-blue transition-colors">
           <input type="checkbox" v-model="store.fixLcdVoltage" @change="store.updateWires" class="accent-neo-blue">
           <span>Fix LCD: Move VCC wire from 3.3V to 5V (VIN)</span>
@@ -98,6 +103,7 @@ const serial = useSerialConnection()
 
 const emit = defineEmits<{
   (e: 'toast', message: string, type: string): void
+  (e: 'open-diagrams'): void
 }>()
 
 const toggleSerialConnection = async () => {

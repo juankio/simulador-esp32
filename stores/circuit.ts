@@ -113,6 +113,13 @@ export const useCircuitStore = defineStore('circuit', () => {
     isPressed: false
   })
 
+  const ledResistors = ref([
+    { id: 'res_r1', x: 700, y: 150, p1: { id: 'res_r1_p1', label: '', x: 0, y: 10, type: 'io', state: 0 }, p2: { id: 'res_r1_p2', label: '', x: 40, y: 10, type: 'io', state: 0 } },
+    { id: 'res_r2', x: 700, y: 220, p1: { id: 'res_r2_p1', label: '', x: 0, y: 10, type: 'io', state: 0 }, p2: { id: 'res_r2_p2', label: '', x: 40, y: 10, type: 'io', state: 0 } },
+    { id: 'res_r3', x: 700, y: 290, p1: { id: 'res_r3_p1', label: '', x: 0, y: 10, type: 'io', state: 0 }, p2: { id: 'res_r3_p2', label: '', x: 40, y: 10, type: 'io', state: 0 } },
+    { id: 'res_g1', x: 700, y: 360, p1: { id: 'res_g1_p1', label: '', x: 0, y: 10, type: 'io', state: 0 }, p2: { id: 'res_g1_p2', label: '', x: 40, y: 10, type: 'io', state: 0 } }
+  ])
+
   // Eliminar led obsoleto
   const led = ref({
     id: 'led1',
@@ -146,20 +153,24 @@ export const useCircuitStore = defineStore('circuit', () => {
 
       // LEDS DE VIDAS (Rojos a D2, D4, D5)
       { id: 'w_d2_bb', fromNode: 'esp_d2', toNode: 'bb_r10', color: '#ef4444' },
-      { id: 'w_bb_l1_a', fromNode: 'bb_r10', toNode: 'led_r1_a', color: '#ef4444' },
+      { id: 'w_bb_res_r1', fromNode: 'bb_r10', toNode: 'res_r1_p1', color: '#ef4444' },
+      { id: 'w_res_r1_l1', fromNode: 'res_r1_p2', toNode: 'led_r1_a', color: '#ef4444' },
       { id: 'w_bb_l1_c', fromNode: 'bb_gnd', toNode: 'led_r1_c', color: '#64748b' },
 
       { id: 'w_d4_bb', fromNode: 'esp_d4', toNode: 'bb_r11', color: '#ef4444' },
-      { id: 'w_bb_l2_a', fromNode: 'bb_r11', toNode: 'led_r2_a', color: '#ef4444' },
+      { id: 'w_bb_res_r2', fromNode: 'bb_r11', toNode: 'res_r2_p1', color: '#ef4444' },
+      { id: 'w_res_r2_l2', fromNode: 'res_r2_p2', toNode: 'led_r2_a', color: '#ef4444' },
       { id: 'w_bb_l2_c', fromNode: 'bb_gnd', toNode: 'led_r2_c', color: '#64748b' },
 
       { id: 'w_d5_bb', fromNode: 'esp_d5', toNode: 'bb_r12', color: '#ef4444' },
-      { id: 'w_bb_l3_a', fromNode: 'bb_r12', toNode: 'led_r3_a', color: '#ef4444' },
+      { id: 'w_bb_res_r3', fromNode: 'bb_r12', toNode: 'res_r3_p1', color: '#ef4444' },
+      { id: 'w_res_r3_l3', fromNode: 'res_r3_p2', toNode: 'led_r3_a', color: '#ef4444' },
       { id: 'w_bb_l3_c', fromNode: 'bb_gnd', toNode: 'led_r3_c', color: '#64748b' },
 
       // LED DE EXITO (Verde a D18)
       { id: 'w_d18_bb', fromNode: 'esp_d18', toNode: 'bb_r14', color: '#22c55e' },
-      { id: 'w_bb_lg_a', fromNode: 'bb_r14', toNode: 'led_g1_a', color: '#22c55e' },
+      { id: 'w_bb_res_g1', fromNode: 'bb_r14', toNode: 'res_g1_p1', color: '#22c55e' },
+      { id: 'w_res_g1_lg', fromNode: 'res_g1_p2', toNode: 'led_g1_a', color: '#22c55e' },
       { id: 'w_bb_lg_c', fromNode: 'bb_gnd', toNode: 'led_g1_c', color: '#64748b' },
 
       // LCD
@@ -433,6 +444,7 @@ export const useCircuitStore = defineStore('circuit', () => {
     lcd,
     wallSensor,
     resistor,
+    ledResistors,
     leds,
     btnStart,
     btnFinish,

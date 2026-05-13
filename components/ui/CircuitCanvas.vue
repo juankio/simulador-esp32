@@ -63,6 +63,11 @@
         <g class="cursor-move" @mousedown="startNodeDrag($event, store.resistor)" v-if="store.fixSensorPullup">
           <CircuitNodeResistor :x="store.resistor.x" :y="store.resistor.y" :p1="store.resistor.p1" :p2="store.resistor.p2" />
         </g>
+
+        <!-- Resistencias de los LEDs -->
+        <g class="cursor-move" v-for="res in store.ledResistors" :key="res.id" @mousedown="startNodeDrag($event, res)">
+          <CircuitNodeResistor :x="res.x" :y="res.y" :p1="res.p1" :p2="res.p2" />
+        </g>
         
         <!-- Dynamic Wires -->
         <CircuitWireLayer />
