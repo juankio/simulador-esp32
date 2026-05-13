@@ -1,0 +1,6 @@
+node_modules
+.nuxt
+.output
+.env
+ui-snapshot.png
+Browser-Emergency.md
