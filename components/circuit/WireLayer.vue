@@ -143,23 +143,37 @@ const getBezierPath = (wire: any) => {
   const dx = Math.abs(p2.x - p1.x)
   const dy = Math.abs(p2.y - p1.y)
 
-  // Enrutamiento mejorado para caídas naturales
-  if (dx > dy * 1.5) {
-     // Movimiento predominantemente horizontal
-     const offset = dx * 0.4
-     // Si p2 está a la izquierda de p1, forzar curva en S hacia abajo para no enrollarse
-     if (p2.x < p1.x) {
-       return `M ${p1.x} ${p1.y} C ${p1.x} ${p1.y + dy + 50}, ${p2.x} ${p2.y + dy + 50}, ${p2.x} ${p2.y}`
-     }
-     return `M ${p1.x} ${p1.y} C ${p1.x + offset} ${p1.y}, ${p2.x - offset} ${p2.y}, ${p2.x} ${p2.y}`
+  // Enrutamiento Ortogonal ("En paralelo", Manhattan Routing)
+  const midX = p1.x + (p2.x - p1.x) / 2
+  const midY = p1.y + (p2.y - p1.y) / 2
+
+  // Añadimos un radio de curvatura (fillet) para que los codos no sean 100% en pico
+  const r = Math.min(10, dx / 2, dy / 2)
+
+  if (dx > dy) {
+     // Ruta horizontal-vertical-horizontal
+     const dirX = p2.x > p1.x ? 1 : -1
+     const dirY = p2.y > p1.y ? 1 : -1
+     if (r <= 0) return `M ${p1.x} ${p1.y} L ${midX} ${p1.y} L ${midX} ${p2.y} L ${p2.x} ${p2.y}`
+     
+     return `M ${p1.x} ${p1.y} 
+             L ${midX - r * dirX} ${p1.y} 
+             Q ${midX} ${p1.y} ${midX} ${p1.y + r * dirY} 
+             L ${midX} ${p2.y - r * dirY} 
+             Q ${midX} ${p2.y} ${midX + r * dirX} ${p2.y} 
+             L ${p2.x} ${p2.y}`
   } else {
-     // Movimiento predominantemente vertical
-     const offset = dy * 0.4
-     // Si p2 está arriba de p1, forzar curva lateral para no enrollarse
-     if (p2.y < p1.y) {
-       return `M ${p1.x} ${p1.y} C ${p1.x + dx + 50} ${p1.y}, ${p2.x + dx + 50} ${p2.y}, ${p2.x} ${p2.y}`
-     }
-     return `M ${p1.x} ${p1.y} C ${p1.x} ${p1.y + offset}, ${p2.x} ${p2.y - offset}, ${p2.x} ${p2.y}`
+     // Ruta vertical-horizontal-vertical
+     const dirX = p2.x > p1.x ? 1 : -1
+     const dirY = p2.y > p1.y ? 1 : -1
+     if (r <= 0) return `M ${p1.x} ${p1.y} L ${p1.x} ${midY} L ${p2.x} ${midY} L ${p2.x} ${p2.y}`
+     
+     return `M ${p1.x} ${p1.y} 
+             L ${p1.x} ${midY - r * dirY} 
+             Q ${p1.x} ${midY} ${p1.x + r * dirX} ${midY} 
+             L ${p2.x - r * dirX} ${midY} 
+             Q ${p2.x} ${midY} ${p2.x} ${midY + r * dirY} 
+             L ${p2.x} ${p2.y}`
   }
 }
 
@@ -187,10 +201,11 @@ watch(isSimulating, (active) => {
 })
 
 // Escuchar cambios profundos en las coordenadas para reiniciar la longitud de la animación
+let dragDebounce: any = null
 watch([esp32, breadboard, leds, ledResistors, lcd, btnStart, btnFinish, resistor], () => {
   if (isSimulating.value) {
-    // Pequeño debounce para no saturar anime.js mientras arrastramos
-    setTimeout(() => {
+    if (dragDebounce) clearTimeout(dragDebounce)
+    dragDebounce = setTimeout(() => {
       startWireAnimation()
     }, 50)
   }
