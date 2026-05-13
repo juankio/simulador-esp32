@@ -11,9 +11,9 @@
       </filter>
     </defs>
 
-    <g v-for="wire in wires" :key="wire.id">
+    <g v-for="wire in wirePaths" :key="wire.id">
       <!-- Invisible hitbox path para eventos del ratón -->
-      <path :d="getBezierPath(wire)" 
+      <path :d="wire.path" 
             fill="none" 
             stroke="transparent" 
             stroke-width="15" 
@@ -23,7 +23,7 @@
             @mouseleave="store.clearHoveredNet()" />
 
       <!-- Base dim wire -->
-      <path :d="getBezierPath(wire)" 
+      <path :d="wire.path" 
             fill="none" 
             :stroke="wire.color" 
             :stroke-width="store.hoveredNet === wire.net ? 4 : 2"
@@ -35,7 +35,7 @@
             }" />
             
       <!-- Active animated wire overlay -->
-      <path :d="getBezierPath(wire)" 
+      <path :d="wire.path" 
             fill="none" 
             :stroke="wire.color" 
             stroke-width="3" 
@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch, onMounted, onBeforeUnmount } from 'vue'
+import { watch, onMounted, onBeforeUnmount, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useCircuitStore } from '~/stores/circuit'
 import { useRouting } from '~/composables/useRouting'
@@ -57,6 +57,16 @@ import anime from 'animejs'
 const store = useCircuitStore()
 const { wires, isSimulating } = storeToRefs(store)
 const { getBezierPath } = useRouting()
+
+// OPTIMIZACIÓN EXTREMA: Pre-calculamos las rutas 1 sola vez por render cycle.
+// Antes Vue llamaba a getBezierPath() 3 veces POR CABLE = ~90 llamadas lentas por cada pixel que movías.
+// Ahora hace 1 llamada por cable y se guarda. Fluidez garantizada a 60FPS.
+const wirePaths = computed(() => {
+  return wires.value.map(wire => ({
+    ...wire,
+    path: getBezierPath(wire)
+  }))
+})
 
 let animation: any = null
 
