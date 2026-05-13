@@ -12,12 +12,27 @@
     </defs>
 
     <g v-for="wire in wires" :key="wire.id">
+      <!-- Invisible hitbox path para eventos del ratón -->
+      <path :d="getBezierPath(wire)" 
+            fill="none" 
+            stroke="transparent" 
+            stroke-width="15" 
+            class="pointer-events-auto cursor-pointer"
+            @mouseenter="store.setHoveredNet(wire.net, wire.name, $event)"
+            @mousemove="store.updateHoverPos($event)"
+            @mouseleave="store.clearHoveredNet()" />
+
       <!-- Base dim wire -->
       <path :d="getBezierPath(wire)" 
             fill="none" 
             :stroke="wire.color" 
-            stroke-width="2" 
-            class="opacity-30 pointer-events-none" />
+            :stroke-width="store.hoveredNet === wire.net ? 4 : 2"
+            class="pointer-events-none transition-all duration-300"
+            :class="{ 
+              'opacity-100 drop-shadow-[0_0_8px_currentColor]': store.hoveredNet === wire.net,
+              'opacity-10': store.hoveredNet && store.hoveredNet !== wire.net,
+              'opacity-30': !store.hoveredNet
+            }" />
             
       <!-- Active animated wire overlay -->
       <path :d="getBezierPath(wire)" 

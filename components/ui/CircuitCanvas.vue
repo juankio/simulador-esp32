@@ -74,16 +74,42 @@
       </g>
     </svg>
     
-    <!-- Zoom Controls UI -->
-    <div class="absolute bottom-6 left-6 flex flex-col gap-2 bg-[#0b1121] border border-neo-grid p-1 rounded z-10 shadow-lg">
-      <button @click="zoom += 0.2" class="w-8 h-8 flex items-center justify-center text-neo-gray hover:text-white hover:bg-white/10 rounded transition-colors">+</button>
-      <div class="w-8 h-[1px] bg-neo-grid"></div>
-      <button @click="zoom = Math.max(0.4, zoom - 0.2)" class="w-8 h-8 flex items-center justify-center text-neo-gray hover:text-white hover:bg-white/10 rounded transition-colors">-</button>
-      <div class="w-8 h-[1px] bg-neo-grid"></div>
-      <button @click="resetView" class="w-8 h-8 flex items-center justify-center text-neo-blue hover:text-white hover:bg-white/10 rounded transition-colors" title="Reset View">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
-      </button>
-    </div>
+      <!-- Zoom Controls UI -->
+      <div class="absolute bottom-6 left-6 flex flex-col gap-2 bg-[#0b1121] border border-neo-grid p-1 rounded z-10 shadow-lg">
+        <button @click="zoom += 0.2" class="w-8 h-8 flex items-center justify-center text-neo-gray hover:text-white hover:bg-white/10 rounded transition-colors">+</button>
+        <div class="w-8 h-[1px] bg-neo-grid"></div>
+        <button @click="zoom = Math.max(0.4, zoom - 0.2)" class="w-8 h-8 flex items-center justify-center text-neo-gray hover:text-white hover:bg-white/10 rounded transition-colors">-</button>
+        <div class="w-8 h-[1px] bg-neo-grid"></div>
+        <button @click="resetView" class="w-8 h-8 flex items-center justify-center text-neo-blue hover:text-white hover:bg-white/10 rounded transition-colors" title="Reset View">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+        </button>
+      </div>
+
+      <!-- Net Highlighter Tooltip -->
+      <div v-if="store.hoveredNet" 
+           class="fixed pointer-events-none z-50 bg-[#0f172a] border p-2 rounded shadow-2xl font-mono text-xs text-white"
+           :class="{
+             'border-neo-red': store.hoveredNet.includes('5V') || store.hoveredNet.includes('3V3'),
+             'border-neo-gray': store.hoveredNet === 'GND',
+             'border-neo-blue': store.hoveredNet.includes('SIG_') || store.hoveredNet.includes('I2C_')
+           }"
+           :style="{ left: store.hoverPos.x + 15 + 'px', top: store.hoverPos.y + 15 + 'px' }">
+        <div class="font-bold flex items-center gap-2"
+             :class="{
+               'text-neo-red': store.hoveredNet.includes('5V') || store.hoveredNet.includes('3V3'),
+               'text-white': store.hoveredNet === 'GND',
+               'text-neo-blue': store.hoveredNet.includes('SIG_') || store.hoveredNet.includes('I2C_')
+             }">
+          <span class="w-2 h-2 rounded-full animate-pulse"
+                :class="{
+                  'bg-neo-red': store.hoveredNet.includes('5V') || store.hoveredNet.includes('3V3'),
+                  'bg-white': store.hoveredNet === 'GND',
+                  'bg-neo-blue': store.hoveredNet.includes('SIG_') || store.hoveredNet.includes('I2C_')
+                }"></span>
+          {{ store.hoveredNet }}
+        </div>
+        <div class="text-neo-gray mt-1 border-t border-neo-grid pt-1">{{ store.hoveredName }}</div>
+      </div>
 
     <!-- Custom Neon Toast Notification -->
     <transition 
