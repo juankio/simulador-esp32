@@ -137,64 +137,64 @@ export const useCircuitStore = defineStore('circuit', () => {
   const updateWires = () => {
     wires.value = [
       // PODER ESP32 -> Protoboard
-      { id: 'w_pwr_5v', fromNode: 'esp_vin', toNode: 'bb_vcc', color: '#ef4444' },
-      { id: 'w_pwr_3v3', fromNode: 'esp_3v3', toNode: 'bb_r1', color: '#ef4444' }, 
-      { id: 'w_pwr_gnd', fromNode: 'esp_gnd_r', toNode: 'bb_gnd', color: '#64748b' },
+      { id: 'w_pwr_5v', fromNode: 'esp_vin', toNode: 'bb_vcc_2', color: '#ef4444' },
+      { id: 'w_pwr_3v3', fromNode: 'esp_3v3', toNode: 'bb_r1_1', color: '#ef4444' }, 
+      { id: 'w_pwr_gnd', fromNode: 'esp_gnd_r', toNode: 'bb_gnd_2', color: '#64748b' },
 
       // BOTON DE INICIO (Conectado a D19)
-      { id: 'w_d19_bb', fromNode: 'esp_d19', toNode: 'bb_r2', color: '#f97316' },
-      { id: 'w_bb_btn_p1', fromNode: 'bb_r2', toNode: 'btn1_p1', color: '#f97316' },
-      { id: 'w_bb_btn_p2', fromNode: 'bb_gnd', toNode: 'btn1_p2', color: '#64748b' },
+      { id: 'w_d19_bb', fromNode: 'esp_d19', toNode: 'bb_r2_1', color: '#f97316' },
+      { id: 'w_bb_btn_p1', fromNode: 'bb_r2_2', toNode: 'btn1_p1', color: '#f97316' },
+      { id: 'w_bb_btn_p2', fromNode: 'bb_gnd_3', toNode: 'btn1_p2', color: '#64748b' },
 
       // BOTON DE META/FINISH (Conectado a D15)
-      { id: 'w_d15_bb', fromNode: 'esp_d15', toNode: 'bb_r6', color: '#38bdf8' },
-      { id: 'w_bb_btn2_p1', fromNode: 'bb_r6', toNode: 'btn2_p1', color: '#38bdf8' },
-      { id: 'w_bb_btn2_p2', fromNode: 'bb_gnd', toNode: 'btn2_p2', color: '#64748b' },
+      { id: 'w_d15_bb', fromNode: 'esp_d15', toNode: 'bb_r6_1', color: '#38bdf8' },
+      { id: 'w_bb_btn2_p1', fromNode: 'bb_r6_2', toNode: 'btn2_p1', color: '#38bdf8' },
+      { id: 'w_bb_btn2_p2', fromNode: 'bb_gnd_4', toNode: 'btn2_p2', color: '#64748b' },
 
       // LEDS DE VIDAS (Rojos a D2, D4, D5)
-      { id: 'w_d2_bb', fromNode: 'esp_d2', toNode: 'bb_r10', color: '#ef4444' },
-      { id: 'w_bb_res_r1', fromNode: 'bb_r10', toNode: 'res_r1_p1', color: '#ef4444' },
+      { id: 'w_d2_bb', fromNode: 'esp_d2', toNode: 'bb_r10_1', color: '#ef4444' },
+      { id: 'w_bb_res_r1', fromNode: 'bb_r10_2', toNode: 'res_r1_p1', color: '#ef4444' },
       { id: 'w_res_r1_l1', fromNode: 'res_r1_p2', toNode: 'led_r1_a', color: '#ef4444' },
-      { id: 'w_bb_l1_c', fromNode: 'bb_gnd', toNode: 'led_r1_c', color: '#64748b' },
+      { id: 'w_bb_l1_c', fromNode: 'bb_gnd_5', toNode: 'led_r1_c', color: '#64748b' },
 
-      { id: 'w_d4_bb', fromNode: 'esp_d4', toNode: 'bb_r11', color: '#ef4444' },
-      { id: 'w_bb_res_r2', fromNode: 'bb_r11', toNode: 'res_r2_p1', color: '#ef4444' },
+      { id: 'w_d4_bb', fromNode: 'esp_d4', toNode: 'bb_r11_1', color: '#ef4444' },
+      { id: 'w_bb_res_r2', fromNode: 'bb_r11_2', toNode: 'res_r2_p1', color: '#ef4444' },
       { id: 'w_res_r2_l2', fromNode: 'res_r2_p2', toNode: 'led_r2_a', color: '#ef4444' },
-      { id: 'w_bb_l2_c', fromNode: 'bb_gnd', toNode: 'led_r2_c', color: '#64748b' },
+      { id: 'w_bb_l2_c', fromNode: 'bb_gnd_6', toNode: 'led_r2_c', color: '#64748b' },
 
-      { id: 'w_d5_bb', fromNode: 'esp_d5', toNode: 'bb_r12', color: '#ef4444' },
-      { id: 'w_bb_res_r3', fromNode: 'bb_r12', toNode: 'res_r3_p1', color: '#ef4444' },
+      { id: 'w_d5_bb', fromNode: 'esp_d5', toNode: 'bb_r12_1', color: '#ef4444' },
+      { id: 'w_bb_res_r3', fromNode: 'bb_r12_2', toNode: 'res_r3_p1', color: '#ef4444' },
       { id: 'w_res_r3_l3', fromNode: 'res_r3_p2', toNode: 'led_r3_a', color: '#ef4444' },
-      { id: 'w_bb_l3_c', fromNode: 'bb_gnd', toNode: 'led_r3_c', color: '#64748b' },
+      { id: 'w_bb_l3_c', fromNode: 'bb_gnd_7', toNode: 'led_r3_c', color: '#64748b' },
 
       // LED DE EXITO (Verde a D18)
-      { id: 'w_d18_bb', fromNode: 'esp_d18', toNode: 'bb_r14', color: '#22c55e' },
-      { id: 'w_bb_res_g1', fromNode: 'bb_r14', toNode: 'res_g1_p1', color: '#22c55e' },
+      { id: 'w_d18_bb', fromNode: 'esp_d18', toNode: 'bb_r14_1', color: '#22c55e' },
+      { id: 'w_bb_res_g1', fromNode: 'bb_r14_2', toNode: 'res_g1_p1', color: '#22c55e' },
       { id: 'w_res_g1_lg', fromNode: 'res_g1_p2', toNode: 'led_g1_a', color: '#22c55e' },
-      { id: 'w_bb_lg_c', fromNode: 'bb_gnd', toNode: 'led_g1_c', color: '#64748b' },
+      { id: 'w_bb_lg_c', fromNode: 'bb_gnd_8', toNode: 'led_g1_c', color: '#64748b' },
 
       // LCD
-      { id: 'w_d21_bb', fromNode: 'esp_d21', toNode: 'bb_r3', color: '#38bdf8' },
-      { id: 'w_bb_lcd_sda', fromNode: 'bb_r3', toNode: 'lcd_sda', color: '#38bdf8' },
-      { id: 'w_d22_bb', fromNode: 'esp_d22', toNode: 'bb_r4', color: '#facc15' },
-      { id: 'w_bb_lcd_scl', fromNode: 'bb_r4', toNode: 'lcd_scl', color: '#facc15' },
-      { id: 'w_lcd_gnd', fromNode: 'bb_gnd', toNode: 'lcd_gnd', color: '#64748b' },
+      { id: 'w_d21_bb', fromNode: 'esp_d21', toNode: 'bb_r3_1', color: '#38bdf8' },
+      { id: 'w_bb_lcd_sda', fromNode: 'bb_r3_2', toNode: 'lcd_sda', color: '#38bdf8' },
+      { id: 'w_d22_bb', fromNode: 'esp_d22', toNode: 'bb_r4_1', color: '#facc15' },
+      { id: 'w_bb_lcd_scl', fromNode: 'bb_r4_2', toNode: 'lcd_scl', color: '#facc15' },
+      { id: 'w_lcd_gnd', fromNode: 'bb_gnd_9', toNode: 'lcd_gnd', color: '#64748b' },
 
       // SENSOR ALUMINIO + RESISTENCIA
-      { id: 'w_d13_bb', fromNode: 'esp_d13', toNode: 'bb_r7', color: '#34d399' },
-      { id: 'w_bb_wall', fromNode: 'bb_r7', toNode: 'wall_out', color: '#34d399' }
+      { id: 'w_d13_bb', fromNode: 'esp_d13', toNode: 'bb_r7_1', color: '#34d399' },
+      { id: 'w_bb_wall', fromNode: 'bb_r7_2', toNode: 'wall_out', color: '#34d399' }
     ]
 
     if (fixLcdVoltage.value) {
-      wires.value.push({ id: 'w_vin_bb', fromNode: 'esp_vin', toNode: 'bb_r5', color: '#ef4444' })
-      wires.value.push({ id: 'w_bb_lcd_vcc', fromNode: 'bb_r5', toNode: 'lcd_vcc', color: '#ef4444' })
+      wires.value.push({ id: 'w_vin_bb', fromNode: 'esp_vin', toNode: 'bb_r5_1', color: '#ef4444' })
+      wires.value.push({ id: 'w_bb_lcd_vcc', fromNode: 'bb_r5_2', toNode: 'lcd_vcc', color: '#ef4444' })
     } else {
-      wires.value.push({ id: 'w_bb_lcd_vcc', fromNode: 'bb_vcc', toNode: 'lcd_vcc', color: '#ef4444' })
+      wires.value.push({ id: 'w_bb_lcd_vcc', fromNode: 'bb_vcc_10', toNode: 'lcd_vcc', color: '#ef4444' })
     }
 
     if (fixSensorPullup.value) {
-      wires.value.push({ id: 'w_bb_res1', fromNode: 'bb_r1', toNode: 'res1_p1', color: '#ef4444' })
-      wires.value.push({ id: 'w_res2_bb', fromNode: 'res1_p2', toNode: 'bb_r7', color: '#34d399' })
+      wires.value.push({ id: 'w_bb_res1', fromNode: 'bb_r1_3', toNode: 'res1_p1', color: '#ef4444' })
+      wires.value.push({ id: 'w_res2_bb', fromNode: 'res1_p2', toNode: 'bb_r7_3', color: '#34d399' })
     }
 
     if(isSimulating.value) {

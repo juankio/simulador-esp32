@@ -48,12 +48,39 @@ const getPinGlobalCoords = (nodeId: string) => {
 
   // 2. Breadboard
   if (nodeId.startsWith('bb_')) {
-    if (nodeId === 'bb_vcc') return { x: breadboard.value.x + 20, y: breadboard.value.y + 150 }
-    if (nodeId === 'bb_gnd') return { x: breadboard.value.x + 45, y: breadboard.value.y + 150 }
+    // Parámetros de la protoboard SVG
+    const bbX = breadboard.value.x
+    const bbY = breadboard.value.y
+
+    // Rieles de Poder VCC/GND (Izquierda)
+    if (nodeId.startsWith('bb_vcc_')) {
+      const idx = parseInt(nodeId.replace('bb_vcc_', ''))
+      return { x: bbX + 15, y: bbY + 15 + (idx * 15) } // Distribuido a lo largo del riel rojo
+    }
+    if (nodeId.startsWith('bb_gnd_')) {
+      const idx = parseInt(nodeId.replace('bb_gnd_', ''))
+      return { x: bbX + 40, y: bbY + 15 + (idx * 15) } // Distribuido a lo largo del riel azul
+    }
+    
+    // Antiguo fallback para VCC/GND simple (retrocompatibilidad)
+    if (nodeId === 'bb_vcc') return { x: bbX + 15, y: bbY + 150 }
+    if (nodeId === 'bb_gnd') return { x: bbX + 40, y: bbY + 150 }
+
+    // Filas (Horizontales) con índices (A, B, C, D, E emulados con números _1, _2, _3)
+    // Formato ej: bb_r10_1, bb_r5_2
+    const rowMatchFull = nodeId.match(/bb_r(\d+)_(\d+)/)
+    if (rowMatchFull) {
+       const rowIdx = parseInt(rowMatchFull[1])
+       const colIdx = parseInt(rowMatchFull[2])
+       // x: 65 es el inicio de los huecos izquierdos, sumamos colIdx * 8 para separar horizontalmente
+       return { x: bbX + 65 + (colIdx * 7), y: bbY + 10 + rowIdx*19 }
+    }
+
+    // Antiguo fallback para Filas sin índice (retrocompatibilidad)
     const rowMatch = nodeId.match(/bb_r(\d+)/)
     if (rowMatch) {
        const rowIdx = parseInt(rowMatch[1])
-       return { x: breadboard.value.x + 80, y: breadboard.value.y + 10 + rowIdx*19 }
+       return { x: bbX + 80, y: bbY + 10 + rowIdx*19 }
     }
   }
 
@@ -100,30 +127,57 @@ const getBezierPath = (wire: any) => {
   
   const dx = Math.abs(p2.x - p1.x)
   const dy = Math.abs(p2.y - p1.y)
-  
-  // Si la línea es muy corta horizontalmente, no forzamos curva brusca
-  if (dx > dy && dx > 50) {
+
+  // Enrutamiento mejorado para caídas naturales
+  if (dx > dy * 1.5) {
+     // Movimiento predominantemente horizontal
      const offset = dx * 0.4
+     // Si p2 está a la izquierda de p1, forzar curva en S hacia abajo para no enrollarse
+     if (p2.x < p1.x) {
+       return `M ${p1.x} ${p1.y} C ${p1.x} ${p1.y + dy + 50}, ${p2.x} ${p2.y + dy + 50}, ${p2.x} ${p2.y}`
+     }
      return `M ${p1.x} ${p1.y} C ${p1.x + offset} ${p1.y}, ${p2.x - offset} ${p2.y}, ${p2.x} ${p2.y}`
   } else {
+     // Movimiento predominantemente vertical
      const offset = dy * 0.4
+     // Si p2 está arriba de p1, forzar curva lateral para no enrollarse
+     if (p2.y < p1.y) {
+       return `M ${p1.x} ${p1.y} C ${p1.x + dx + 50} ${p1.y}, ${p2.x + dx + 50} ${p2.y}, ${p2.x} ${p2.y}`
+     }
      return `M ${p1.x} ${p1.y} C ${p1.x} ${p1.y + offset}, ${p2.x} ${p2.y - offset}, ${p2.x} ${p2.y}`
   }
 }
 
+// Watch global states to recalculate paths or animations
 let animation: any = null
 
+const startWireAnimation = () => {
+  if (animation) animation.pause()
+  animation = anime({
+    targets: '.wire-pulse',
+    strokeDashoffset: [anime.setDashoffset, 0],
+    easing: 'linear',
+    duration: 1200,
+    loop: true
+  })
+}
+
+// Escuchar cambios tanto en isSimulating como en los wires (si cambian/estiran)
 watch(isSimulating, (active) => {
   if (active) {
-    animation = anime({
-      targets: '.wire-pulse',
-      strokeDashoffset: [anime.setDashoffset, 0],
-      easing: 'linear',
-      duration: 1200,
-      loop: true
-    })
+    startWireAnimation()
   } else {
     if (animation) animation.pause()
   }
 })
+
+// Escuchar cambios profundos en las coordenadas para reiniciar la longitud de la animación
+watch([esp32, breadboard, leds, ledResistors, lcd, btnStart, btnFinish, resistor], () => {
+  if (isSimulating.value) {
+    // Pequeño debounce para no saturar anime.js mientras arrastramos
+    setTimeout(() => {
+      startWireAnimation()
+    }, 50)
+  }
+}, { deep: true })
 </script>
