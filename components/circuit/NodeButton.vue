@@ -2,7 +2,10 @@
   <g class="btn-node cursor-pointer" :transform="`translate(${x}, ${y})`"
      @mousedown="$emit('press', true)"
      @mouseup="$emit('press', false)"
-     @mouseleave="$emit('press', false)">
+     @mouseleave="$emit('press', false)"
+     @touchstart.prevent="$emit('press', true)"
+     @touchend.prevent="$emit('press', false)"
+     @touchcancel.prevent="$emit('press', false)">
     
     <!-- Base -->
     <rect x="0" y="0" width="40" height="40" rx="4" class="fill-[#0b1121] stroke-neo-gray" stroke-width="2" />

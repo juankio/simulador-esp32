@@ -1,10 +1,14 @@
 <template>
   <main 
-    class="flex-1 relative overflow-hidden bg-neo-bg cursor-grab active:cursor-grabbing"
+    class="flex-1 relative overflow-hidden bg-neo-bg cursor-grab active:cursor-grabbing touch-none"
     @mousedown="startPanOrDrag"
     @mousemove="doPanOrDrag"
     @mouseup="endPanOrDrag"
     @mouseleave="endPanOrDrag"
+    @touchstart="startPanOrDragTouch"
+    @touchmove.prevent="doPanOrDragTouch"
+    @touchend="endPanOrDrag"
+    @touchcancel="endPanOrDrag"
     @wheel="doZoom"
   >
     <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-20">
@@ -21,18 +25,18 @@
     <svg class="w-full h-full overflow-visible">
       <g :transform="`translate(${pan.x}, ${pan.y}) scale(${zoom})`">
         
-        <g class="cursor-move" @mousedown="startNodeDrag($event, store.esp32)"><CircuitNodeESP32 :x="store.esp32.x" :y="store.esp32.y" :pins="store.esp32.pins" /></g>
-        <g class="cursor-move" @mousedown="startNodeDrag($event, store.breadboard)"><CircuitNodeBreadboard :x="store.breadboard.x" :y="store.breadboard.y" /></g>
+        <g class="cursor-move" @mousedown="startNodeDrag($event, store.esp32)" @touchstart="startNodeDragTouch($event, store.esp32)"><CircuitNodeESP32 :x="store.esp32.x" :y="store.esp32.y" :pins="store.esp32.pins" /></g>
+        <g class="cursor-move" @mousedown="startNodeDrag($event, store.breadboard)" @touchstart="startNodeDragTouch($event, store.breadboard)"><CircuitNodeBreadboard :x="store.breadboard.x" :y="store.breadboard.y" /></g>
         
         <!-- LEDs (3 Rojos de Error y 1 Verde de Éxito) -->
-        <g class="cursor-move" v-for="led in store.leds" :key="led.id" @mousedown="startNodeDrag($event, led)">
+        <g class="cursor-move" v-for="led in store.leds" :key="led.id" @mousedown="startNodeDrag($event, led)" @touchstart="startNodeDragTouch($event, led)">
           <CircuitNodeLED 
             :x="led.x" :y="led.y" :anode="led.anode" :cathode="led.cathode" 
             :isOn="led.isOn" :color="(led.color as any)" />
         </g>
         
         <!-- Botón de Inicio -->
-        <g class="cursor-move" @mousedown="startNodeDrag($event, store.btnStart)">
+        <g class="cursor-move" @mousedown="startNodeDrag($event, store.btnStart)" @touchstart="startNodeDragTouch($event, store.btnStart)">
           <CircuitNodeButton 
             :x="store.btnStart.x" :y="store.btnStart.y" :p1="store.btnStart.p1" :p2="store.btnStart.p2"
             :isPressed="store.btnStart.isPressed" label="START"
@@ -40,20 +44,20 @@
         </g>
 
         <!-- Botón de Meta / Finish -->
-        <g class="cursor-move" @mousedown="startNodeDrag($event, store.btnFinish)">
+        <g class="cursor-move" @mousedown="startNodeDrag($event, store.btnFinish)" @touchstart="startNodeDragTouch($event, store.btnFinish)">
           <CircuitNodeButton 
             :x="store.btnFinish.x" :y="store.btnFinish.y" :p1="store.btnFinish.p1" :p2="store.btnFinish.p2"
             :isPressed="store.btnFinish.isPressed" label="FINISH"
             @press="(s) => store.triggerButton(s, true)" />
         </g>
           
-        <g class="cursor-move" @mousedown="startNodeDrag($event, store.lcd)">
+        <g class="cursor-move" @mousedown="startNodeDrag($event, store.lcd)" @touchstart="startNodeDragTouch($event, store.lcd)">
           <CircuitNodeLCD 
             :x="store.lcd.x" :y="store.lcd.y" :pins="store.lcd.pins" 
             :backlightOn="store.lcd.backlightOn" :errorLowVoltage="store.lcd.errorLowVoltage" :text="store.lcd.text" />
         </g>
           
-        <g class="cursor-move" @mousedown="startNodeDrag($event, store.wallSensor)">
+        <g class="cursor-move" @mousedown="startNodeDrag($event, store.wallSensor)" @touchstart="startNodeDragTouch($event, store.wallSensor)">
           <CircuitNodeWall 
             :x="store.wallSensor.x" :y="store.wallSensor.y" :pin="store.wallSensor.pin" 
             :isTouched="store.wallSensor.isTouched" :glitching="store.wallSensor.glitching"
@@ -61,12 +65,12 @@
         </g>
           
         <!-- Resistencia PullUp -->
-        <g class="cursor-move" @mousedown="startNodeDrag($event, store.resistor)" v-if="store.fixSensorPullup">
+        <g class="cursor-move" @mousedown="startNodeDrag($event, store.resistor)" @touchstart="startNodeDragTouch($event, store.resistor)" v-if="store.fixSensorPullup">
           <CircuitNodeResistor :x="store.resistor.x" :y="store.resistor.y" :p1="store.resistor.p1" :p2="store.resistor.p2" />
         </g>
 
         <!-- Resistencias de los LEDs -->
-        <g class="cursor-move" v-for="res in store.ledResistors" :key="res.id" @mousedown="startNodeDrag($event, res)">
+        <g class="cursor-move" v-for="res in store.ledResistors" :key="res.id" @mousedown="startNodeDrag($event, res)" @touchstart="startNodeDragTouch($event, res)">
           <CircuitNodeResistor :x="res.x" :y="res.y" :p1="res.p1" :p2="res.p2" />
         </g>
 
@@ -190,13 +194,56 @@ const startNodeDrag = (e: MouseEvent, nodeRef: any) => {
   e.stopPropagation()
   draggingNode.value = nodeRef
   
-  // Calcular el mouse en coordenadas del SVG (restando el paneo y el zoom)
   const svgMouseX = (e.clientX - pan.value.x) / zoom.value
   const svgMouseY = (e.clientY - pan.value.y) / zoom.value
   
   startDragNodeOffset.value = {
     x: svgMouseX - nodeRef.x,
     y: svgMouseY - nodeRef.y
+  }
+}
+
+// === Touch Support ===
+const startPanOrDragTouch = (e: TouchEvent) => {
+  if (e.touches.length !== 1) return
+  const touch = e.touches[0]
+  const target = e.target as Element
+  if (target.tagName === 'svg' || (target.tagName === 'rect' && target.id === '')) {
+    isDraggingPan.value = true
+    startDragPan.value = { x: touch.clientX - pan.value.x, y: touch.clientY - pan.value.y }
+  }
+}
+
+const startNodeDragTouch = (e: TouchEvent, nodeRef: any) => {
+  if (e.touches.length !== 1) return
+  e.stopPropagation()
+  draggingNode.value = nodeRef
+  const touch = e.touches[0]
+  
+  const svgMouseX = (touch.clientX - pan.value.x) / zoom.value
+  const svgMouseY = (touch.clientY - pan.value.y) / zoom.value
+  
+  startDragNodeOffset.value = {
+    x: svgMouseX - nodeRef.x,
+    y: svgMouseY - nodeRef.y
+  }
+}
+
+const doPanOrDragTouch = (e: TouchEvent) => {
+  if (e.touches.length !== 1) return
+  const touch = e.touches[0]
+
+  if (draggingNode.value) {
+    const svgMouseX = (touch.clientX - pan.value.x) / zoom.value
+    const svgMouseY = (touch.clientY - pan.value.y) / zoom.value
+    
+    draggingNode.value.x = svgMouseX - startDragNodeOffset.value.x
+    draggingNode.value.y = svgMouseY - startDragNodeOffset.value.y
+  } else if (isDraggingPan.value) {
+    pan.value = {
+      x: touch.clientX - startDragPan.value.x,
+      y: touch.clientY - startDragPan.value.y
+    }
   }
 }
 

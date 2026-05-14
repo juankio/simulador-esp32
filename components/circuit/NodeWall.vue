@@ -2,7 +2,10 @@
   <g class="wall-node cursor-pointer" :transform="`translate(${x}, ${y})`" 
      @mousedown="$emit('touch', true)" 
      @mouseup="$emit('touch', false)"
-     @mouseleave="$emit('touch', false)">
+     @mouseleave="$emit('touch', false)"
+     @touchstart.prevent="$emit('touch', true)"
+     @touchend.prevent="$emit('touch', false)"
+     @touchcancel.prevent="$emit('touch', false)">
     
     <!-- Aluminum Foil representation -->
     <rect x="0" y="0" width="100" height="100" rx="2" 
