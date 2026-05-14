@@ -43,6 +43,21 @@
             class="wire-pulse opacity-0 pointer-events-none"
             :class="{ 'opacity-100': isSimulating }"
             stroke-dasharray="10 10" />
+
+      <!-- Conectores visuales profundos (Plugs metidos en los huecos) -->
+      <g class="pointer-events-none">
+        <!-- Pin Base / Sombra para dar profundidad -->
+        <circle :cx="wire.p1.x" :cy="wire.p1.y" r="2.5" fill="#000000" class="opacity-80"/>
+        <circle :cx="wire.p2.x" :cy="wire.p2.y" r="2.5" fill="#000000" class="opacity-80"/>
+        
+        <!-- Plástico del pin (del color del cable, levemente más arriba visualmente para dar 3D) -->
+        <circle :cx="wire.p1.x" :cy="wire.p1.y - 1" r="2.5" :fill="wire.color" />
+        <circle :cx="wire.p2.x" :cy="wire.p2.y - 1" r="2.5" :fill="wire.color" />
+        
+        <!-- Brillo / Punta de metal -->
+        <circle :cx="wire.p1.x" :cy="wire.p1.y - 1" r="1" fill="#ffffff" class="opacity-90"/>
+        <circle :cx="wire.p2.x" :cy="wire.p2.y - 1" r="1" fill="#ffffff" class="opacity-90"/>
+      </g>
     </g>
   </g>
 </template>
@@ -56,16 +71,22 @@ import anime from 'animejs'
 
 const store = useCircuitStore()
 const { wires, isSimulating } = storeToRefs(store)
-const { getBezierPath } = useRouting()
+const { getBezierPath, getPinGlobalCoords } = useRouting()
 
 // OPTIMIZACIÓN EXTREMA: Pre-calculamos las rutas 1 sola vez por render cycle.
 // Antes Vue llamaba a getBezierPath() 3 veces POR CABLE = ~90 llamadas lentas por cada pixel que movías.
 // Ahora hace 1 llamada por cable y se guarda. Fluidez garantizada a 60FPS.
 const wirePaths = computed(() => {
-  return wires.value.map(wire => ({
-    ...wire,
-    path: getBezierPath(wire)
-  }))
+  return wires.value.map(wire => {
+    const p1 = getPinGlobalCoords(wire.fromNode)
+    const p2 = getPinGlobalCoords(wire.toNode)
+    return {
+      ...wire,
+      p1,
+      p2,
+      path: getBezierPath(wire)
+    }
+  })
 })
 
 let animation: any = null

@@ -12,23 +12,35 @@
 
     <!-- Nodes visual points -->
     <g v-for="i in 15" :key="i">
+       <!-- Power Lines (Internal Connections) -->
+       <line v-if="i > 1" :x1="20" :y1="10 + (i-1)*19" :x2="20" :y2="10 + i*19" class="stroke-neo-red opacity-30" stroke-width="2" />
+       <line v-if="i > 1" :x1="45" :y1="10 + (i-1)*19" :x2="45" :y2="10 + i*19" class="stroke-neo-blue opacity-30" stroke-width="2" />
+
        <!-- Power Holes -->
-       <circle :cx="20" :cy="10 + i*19" r="2.5" class="fill-neo-bg stroke-[#334155]" />
-       <circle :cx="45" :cy="10 + i*19" r="2.5" class="fill-neo-bg stroke-[#334155]" />
+       <circle :cx="20" :cy="10 + i*19" r="3" class="fill-[#0b1121] stroke-neo-red opacity-80" />
+       <circle :cx="45" :cy="10 + i*19" r="3" class="fill-[#0b1121] stroke-neo-blue opacity-80" />
        
        <!-- Row Holes (Simulated terminal strips) -->
-       <rect :x="65" :y="10 + i*19 - 4" width="30" height="8" rx="2" class="fill-neo-bg stroke-[#334155]" />
-       <circle :cx="70" :cy="10 + i*19" r="1.5" class="fill-[#334155]" />
-       <circle :cx="80" :cy="10 + i*19" r="1.5" class="fill-[#334155]" />
-       <circle :cx="90" :cy="10 + i*19" r="1.5" class="fill-[#334155]" />
+       <!-- Left Side connection line -->
+       <rect :x="65" :y="10 + i*19 - 5" width="30" height="10" rx="5" class="fill-[#0b1121] stroke-[#334155]" />
+       <line :x1="70" :y1="10 + i*19" :x2="90" :y2="10 + i*19" class="stroke-[#475569]" stroke-width="3" stroke-linecap="round" />
+       
+       <!-- Holes -->
+       <circle :cx="70" :cy="10 + i*19" r="2.5" class="fill-[#0b1121]" />
+       <circle :cx="80" :cy="10 + i*19" r="2.5" class="fill-[#0b1121]" />
+       <circle :cx="90" :cy="10 + i*19" r="2.5" class="fill-[#0b1121]" />
 
-       <rect :x="105" :y="10 + i*19 - 4" width="30" height="8" rx="2" class="fill-neo-bg stroke-[#334155]" />
-       <circle :cx="110" :cy="10 + i*19" r="1.5" class="fill-[#334155]" />
-       <circle :cx="120" :cy="10 + i*19" r="1.5" class="fill-[#334155]" />
-       <circle :cx="130" :cy="10 + i*19" r="1.5" class="fill-[#334155]" />
+       <!-- Right Side connection line -->
+       <rect :x="105" :y="10 + i*19 - 5" width="30" height="10" rx="5" class="fill-[#0b1121] stroke-[#334155]" />
+       <line :x1="110" :y1="10 + i*19" :x2="130" :y2="10 + i*19" class="stroke-[#475569]" stroke-width="3" stroke-linecap="round" />
+
+       <!-- Holes -->
+       <circle :cx="110" :cy="10 + i*19" r="2.5" class="fill-[#0b1121]" />
+       <circle :cx="120" :cy="10 + i*19" r="2.5" class="fill-[#0b1121]" />
+       <circle :cx="130" :cy="10 + i*19" r="2.5" class="fill-[#0b1121]" />
        
        <!-- Row Labels -->
-       <text :x="148" :y="10 + i*19 + 3" class="fill-neo-gray text-[8px] font-mono opacity-50">{{ i }}</text>
+       <text :x="148" :y="10 + i*19 + 3" class="fill-neo-gray text-[9px] font-mono opacity-80 font-bold">{{ i }}</text>
     </g>
     <text x="80" y="315" text-anchor="middle" class="fill-neo-gray text-[10px] font-mono font-bold tracking-widest opacity-30">BREADBOARD</text>
   </g>

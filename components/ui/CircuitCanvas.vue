@@ -21,9 +21,6 @@
     <svg class="w-full h-full overflow-visible">
       <g :transform="`translate(${pan.x}, ${pan.y}) scale(${zoom})`">
         
-        <!-- Dynamic Wires (Rendered FIRST so they are BEHIND the components) -->
-        <CircuitWireLayer />
-
         <g class="cursor-move" @mousedown="startNodeDrag($event, store.esp32)"><CircuitNodeESP32 :x="store.esp32.x" :y="store.esp32.y" :pins="store.esp32.pins" /></g>
         <g class="cursor-move" @mousedown="startNodeDrag($event, store.breadboard)"><CircuitNodeBreadboard :x="store.breadboard.x" :y="store.breadboard.y" /></g>
         
@@ -72,6 +69,9 @@
         <g class="cursor-move" v-for="res in store.ledResistors" :key="res.id" @mousedown="startNodeDrag($event, res)">
           <CircuitNodeResistor :x="res.x" :y="res.y" :p1="res.p1" :p2="res.p2" />
         </g>
+
+        <!-- Dynamic Wires (Rendered LAST so they are ON TOP of the components) -->
+        <CircuitWireLayer />
         
       </g>
     </svg>

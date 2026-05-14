@@ -15,12 +15,12 @@
 
     <!-- Pins -->
     <g v-for="pin in pins" :key="pin.id" :transform="`translate(${pin.x}, ${pin.y})`">
-      <circle cx="0" cy="0" r="4" 
+      <circle cx="0" cy="0" r="3" 
               class="transition-all duration-300"
               :class="pin.state === 1 ? 'fill-neo-purple stroke-neo-purple drop-shadow-[0_0_5px_#a855f7]' : 'fill-[#0b1121] stroke-neo-gray'"
-              stroke-width="2" />
-      <text :x="pin.x === 10 ? 12 : -12" :y="3" 
-            :text-anchor="pin.x === 10 ? 'start' : 'end'"
+              stroke-width="1.5" />
+      <text :x="pin.x < 60 ? 12 : -12" :y="3" 
+            :text-anchor="pin.x < 60 ? 'start' : 'end'"
             class="fill-neo-gray text-[8px] font-mono select-none font-bold">
         {{ pin.label }}
       </text>

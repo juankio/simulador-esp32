@@ -11,9 +11,7 @@
   },
   "dependencies": {
     "animejs": "^3.2.2",
-    "nuxt": "^3.11.2",
-    "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "nuxt": "3.13.2"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.11.4",

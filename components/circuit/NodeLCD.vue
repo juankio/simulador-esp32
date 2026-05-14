@@ -25,9 +25,10 @@
     </text>
 
     <!-- I2C Backpack Pins -->
+    <rect x="5" y="-12" width="90" height="15" rx="2" class="fill-[#0b1121] stroke-neo-gray" stroke-width="1.5" />
     <g v-for="pin in pins" :key="pin.id" :transform="`translate(${pin.x}, -8)`">
-      <circle cx="0" cy="0" r="4" class="fill-neo-bg stroke-neo-gray" stroke-width="2" />
-      <text x="0" y="-12" text-anchor="middle" class="fill-neo-gray text-[8px] font-mono font-bold">{{ pin.label }}</text>
+      <circle cx="0" cy="0" r="3" class="fill-[#1e293b] stroke-neo-gray" stroke-width="1" />
+      <text x="0" y="10" text-anchor="middle" class="fill-neo-gray text-[7px] font-mono font-bold">{{ pin.label }}</text>
     </g>
   </g>
 </template>

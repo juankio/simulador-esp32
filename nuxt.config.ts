@@ -1,7 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  compatibilityDate: '2024-04-03',
   ssr: false, // SPA mode for WebGL/Monaco/SVG performance and to prevent hydration mismatches
   devtools: { enabled: true },
+  experimental: {
+    appManifest: false
+  },
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt'
